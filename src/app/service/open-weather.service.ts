@@ -37,3 +37,6 @@ export class OpenWeatherService {
     return this.http.get(latlonUrl, {headers: this.httpHeaders});
   }
 }
+
+// to Deploy github pages
+// ng build --output-path docs --base-href /angular-weather/
