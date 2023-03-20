@@ -21,6 +21,7 @@
   <div class="container pb-5" *ngIf="this.resData && !this.isError">
     <div class="text-light h4 text-center">
       <p class="h6">{{this.resData.weather[0].main}}</p>
+      <p *ngIf="!this.isPMerror" class="h6">PM25 : {{this.resPM25.stations[0].aqiInfo.concentration}}</p>
       <img class="img-fluid" src="assets/images/{{this.resData.weather[0].main | lowercase}}.png"
         alt="weather animation">
     </div>

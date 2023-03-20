@@ -24,7 +24,9 @@ export class WeatherComponent {
 
   // ประกาศค่าเปล่า รอรับ res
   public resData: any;
-  public isError: any;
+  public resPM25: any;
+  public isError: any = true;
+  public isPMerror: any = true;
   public lat: any;
   public lon: any;
 
@@ -68,12 +70,27 @@ export class WeatherComponent {
         this.isError = false;
       },
     });
+    // get PM25 api
+    this.service.getPM25byLatLon(this.lat,this.lon).subscribe({
+      next: (res) => {
+        this.resPM25 = res;
+        // console.log(this.resPM25.stations[0].aqiInfo.concentration);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isPMerror = true;
+      },
+      complete: () => {
+        this.isPMerror = false;
+      },
+    });
   }
 
   getWeatherByCity() {
     console.log('4. call api by city name when click');
-    if (this.weatherForm.value.location) {
-      this.service.getWeatherByCity(this.weatherForm.value.location).subscribe({
+    const cityName = this.weatherForm.value.location
+    if (cityName) {
+      this.service.getWeatherByCity(cityName).subscribe({
         next: (res) => {
           this.resData = res;
           // console.log(this.resData);
@@ -89,5 +106,19 @@ export class WeatherComponent {
     } else {
       alert('Please input your City');
     }
+    // get PM25 api
+    this.service.getPM25byCity(cityName).subscribe({
+      next: (res) => {
+        this.resPM25 = res;
+        // console.log(this.resPM25);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isPMerror = true;
+      },
+      complete: () => {
+        this.isPMerror = false;
+      },
+    });
   }
 }
